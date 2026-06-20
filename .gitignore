@@ -1,0 +1,8 @@
+dist/ 
+build/ 
+nbproject/private/ 
+
+payara-micro.jar
+payara_log*.txt
+dist/.git/
+*.log

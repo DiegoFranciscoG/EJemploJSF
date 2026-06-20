@@ -1,0 +1,46 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <title><ui:insert name="title">Gestion Empresa</ui:insert></title>
+        <h:outputStylesheet name="css/default.css"/>
+        <h:outputStylesheet name="css/cssLayout.css"/>
+        <h:outputStylesheet library="css" name="jsfcrud.css"/>
+        <h:outputScript library="js" name="jsfcrud.js"/>
+    </h:head>
+
+    <h:body>
+        <p:growl id="growl" life="3000" />
+
+        <div id="top" class="top">
+            <h1 style="color: red; margin:0; padding:0; border: none; font-size: 16px;">GESTION EMPRESA</h1>
+        </div>
+        <div>
+            <div id="left">
+                <br />
+                <h:form>
+                    <h:link outcome="/index" value="Inicio" /><br /><br/>
+                    <h:link outcome="/departamento/List" value="Departamentos"/><br /><br/>
+                    <h:link outcome="/empleado/List" value="Empleados"/><br /><br/>
+                    <h:link outcome="/grafica" value="Ver Gráficas"/><br />
+                </h:form>
+            </div>
+            <div id="right">
+                right
+            </div>
+            <div id="content" class="right_content" style="min-height: 450px;">
+                <ui:insert name="body">content</ui:insert>
+            </div>
+        </div>
+        <div id="bottom" style="clear:both;">
+            bottom
+        </div>
+
+    </h:body>
+
+</html>
