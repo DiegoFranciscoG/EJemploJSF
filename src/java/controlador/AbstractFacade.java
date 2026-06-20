@@ -14,23 +14,32 @@ import javax.persistence.Persistence;
  */
 public abstract class AbstractFacade<T> {
 
-    private static EntityManagerFactory emf;
+    // EMF se crea de forma lazy (no en static block) para evitar que un fallo
+    // de conexion impida que toda la clase cargue y el WAR se despliegue.
+    private static volatile EntityManagerFactory emf;
 
     private Class<T> entityClass;
 
-    static {
-        // Payara Micro no registra el driver JDBC automaticamente, hay que cargarlo manualmente
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            throw new ExceptionInInitializerError("No se encontro el driver MySQL: " + e.getMessage());
+    private static EntityManagerFactory getEMF() {
+        if (emf == null) {
+            synchronized (AbstractFacade.class) {
+                if (emf == null) {
+                    try {
+                        // Forzar registro del driver MySQL con DriverManager
+                        Class.forName("com.mysql.cj.jdbc.Driver");
+                    } catch (ClassNotFoundException e) {
+                        // El driver no se encontro, la conexion fallara mas adelante
+                    }
+                    Map<String, String> props = new HashMap<>();
+                    String password = System.getenv("DB_PASSWORD");
+                    if (password != null && !password.isEmpty()) {
+                        props.put("javax.persistence.jdbc.password", password);
+                    }
+                    emf = Persistence.createEntityManagerFactory("EJemploJSFPU", props);
+                }
+            }
         }
-        Map<String, String> props = new HashMap<>();
-        String password = System.getenv("DB_PASSWORD");
-        if (password != null && !password.isEmpty()) {
-            props.put("javax.persistence.jdbc.password", password);
-        }
-        emf = Persistence.createEntityManagerFactory("EJemploJSFPU", props);
+        return emf;
     }
 
     public AbstractFacade(Class<T> entityClass) {
@@ -38,7 +47,7 @@ public abstract class AbstractFacade<T> {
     }
 
     protected EntityManager getEntityManager() {
-        return emf.createEntityManager();
+        return getEMF().createEntityManager();
     }
 
     public void create(T entity) {
