@@ -19,6 +19,12 @@ public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
 
     static {
+        // Payara Micro no registra el driver JDBC automaticamente, hay que cargarlo manualmente
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+        } catch (ClassNotFoundException e) {
+            throw new ExceptionInInitializerError("No se encontro el driver MySQL: " + e.getMessage());
+        }
         Map<String, String> props = new HashMap<>();
         String password = System.getenv("DB_PASSWORD");
         if (password != null && !password.isEmpty()) {
