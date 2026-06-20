@@ -9,7 +9,7 @@
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql-datos1-diegofgz2004-6a33.b.aivencloud.com:28419/defaultdb?sslMode=DISABLED"/>
       <property name="javax.persistence.jdbc.user" value="avnadmin"/>
       <property name="javax.persistence.jdbc.password" value=""/>
-      <property name="eclipselink.ddl-generation" value="none"/>
+      <property name="eclipselink.ddl-generation" value="create-or-extend-tables"/>
       <property name="eclipselink.logging.level" value="WARNING"/>
     </properties>
   </persistence-unit>
